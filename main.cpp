@@ -1,12 +1,10 @@
-#include<Windows.h>
+#include <Windows.h>
 
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+{
 
-	OutputDebugStringA("Hello,CG!!\n");
-
-	
-	　
+    OutputDebugStringA("Hello,CG!!\n");
 
 
-	return 0;
+    return 0;
 }
