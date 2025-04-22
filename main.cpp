@@ -57,6 +57,8 @@ std::string ConvertString(const std::wstring& str)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 
+    Log(ConvertString(std::format(L"WSTRING{}\n", L"abc")));
+
     OutputDebugStringA("Hello,CG!!\n");
 
     WNDCLASS wc {};
