@@ -54,6 +54,7 @@
     <None Include="externals\imgui\.gitignore">
       <Filter>imgui</Filter>
     </None>
+    <None Include="Object3d.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />
