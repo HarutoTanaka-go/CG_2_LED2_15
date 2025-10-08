@@ -1323,6 +1323,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//描画！(DrawCall/ドローコール)6個のインデックスを使用し1つのインスタンスを描画。その他当面0で良い
 			commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
+			commandList->DrawInstanced(UINT(modelData.vertices.size()), 1, 0, 0);
 
 			//モデル描画
 			commandList->DrawInstanced(UINT(modelData.vertices.size()), 1, 0, 0);
