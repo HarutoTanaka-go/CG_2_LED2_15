@@ -955,6 +955,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//緯度分割1つ分の角度
 	const float kLatEvery = pi / float(kSubdivision);
 
+
 	//緯度の方向に分割
 	for (uint32_t latIndex = 0; latIndex < kSubdivision; latIndex++)
 	{
