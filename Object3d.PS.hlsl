@@ -4,7 +4,7 @@ struct Material
 {
     float32_t4 color;
     int32_t enableLighting;
-    float32_t3x3 uvTransform;
+    float32_t shininess;
 };
 
 struct DirectionalLight
@@ -14,8 +14,14 @@ struct DirectionalLight
     float intensity; //!<輝度
 };
 
+struct Camera
+{
+    float32_t3 worldPosition;
+};
+
 ConstantBuffer<Material> gMaterial : register(b0);
 ConstantBuffer<DirectionalLight> gDirectionalLight : register(b1);
+ConstantBuffer<Camera> gCamera : register(b2);
 
 Texture2D<float32_t4> gTexture : register(t0);
 SamplerState gSampler : register(s0);
@@ -32,6 +38,13 @@ PixelShaderOutput main(VertexShaderOutput input)
     
     if (gMaterial.enableLighting != 0)//Lightingする場合
     {
+        //Lightingする場合
+        float32_t3 toEye = normalize(gCamera.worldPosition - input.worldPosition);
+        float32_t3 reflectLight = reflect(gDirectionalLight.direction, normalize(input.normal));
+        float RdotE = dot(reflectLight, toEye);
+        float specularPow = pow(saturate(RdotE), gMaterial.shininess); //反射強度
+        //float specularPow = pow(saturate(RdotE), 70);
+        
         //float cos = saturate(dot(normalize(input.normal), -gDirectionalLight.direction));
         
         //half lambart
@@ -40,7 +53,17 @@ PixelShaderOutput main(VertexShaderOutput input)
         
         
         
-        output.color = gMaterial.color * textureColor * gDirectionalLight.color * cos * gDirectionalLight.intensity;
+        //output.color = gMaterial.color * textureColor * gDirectionalLight.color * cos * gDirectionalLight.intensity;
+        
+        //拡散反射
+        float32_t3 diffuse = gMaterial.color.rgb * textureColor.rgb * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
+        //鏡面反射
+        float32_t3 specular = gDirectionalLight.color.rgb * gDirectionalLight.intensity * specularPow * float32_t3(1.0f, 1.0f, 1.0f);
+        //拡散反射+鏡面反射
+        output.color.rgb = diffuse + specular;
+        //アルファは今までどうり
+        output.color.a = gMaterial.color.a * textureColor.a;
+        
         
     }
     else //Lightingしない場合。前回までと同じ演算
